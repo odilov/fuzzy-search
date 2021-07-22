@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
+import { articles , IArticle } from './data/articles';
+import { SearchService , SearchSegment } from './services/search.service';
 
 /* structure to keep matches */
 interface IMatch{
-  value : string;
-  score : number;
-  segment : any;
+  value    : IArticle;
+  score    : number;
+  segments?: SearchSegment[];
 }
 
 @Component({
@@ -20,7 +22,7 @@ export class AppComponent {
 
   public matches : IMatch[];
 
-  constructor(){
+  constructor( private searchService : SearchService ){
     // initialization
     this.request = "";
     this.matches = [];
@@ -31,6 +33,11 @@ export class AppComponent {
       this.matches = [];
       return;
     }
+
+    this.matches = articles.map( ( article ) => {
+        return ( { value : article, score : 1 } );
+    } );
+
   }
 
 }
