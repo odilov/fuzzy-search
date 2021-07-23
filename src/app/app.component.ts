@@ -35,7 +35,13 @@ export class AppComponent {
     }
 
     this.matches = articles.map( ( article ) => {
-        return ( { value : article, score : 1 } );
+        return ( { 
+          value : article, 
+          score : this.searchService.levensteinDistance( this.request, article.title )
+        } );
+    } )
+    .sort( ( a, b ) => {
+      return ( a.score >= b.score ? 1 : -1 );
     } );
 
   }

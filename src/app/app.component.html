@@ -11,7 +11,7 @@
 
   <ul id="result" *ngIf = "matches.length" >
     <li *ngFor = "let match of matches">
-      <a href="#">some item</a>
+      <a href="#">{{ match.value.title }} score: {{ match.score }}</a>
     </li>
     
   </ul>
