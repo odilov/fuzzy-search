@@ -18,7 +18,7 @@ export class SearchService{
     /**
         * @param  { string } a Request
         * @param  { string } b Compared string
-        * const s { [replace], [insert], [remove] } = 1
+        * costs   { [replace], [insert], [remove] } = 1
         * @return { number } Levenstein distance
     **/
 
