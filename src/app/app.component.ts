@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { articles , IArticle } from './data/articles';
-import { SearchService , SearchSegment } from './services/search.service';
+import { Games } from './data/games';
+import { SearchService , IHighlight } from './services/search.service';
 
-/* structure to keep matches */
+/* struct to keep the results of search with highlights */
 interface IMatch{
-  value    : IArticle;
+  value    : string;
   score    : number;
-  segments?: SearchSegment[];
+  highlights: IHighlight[];
 }
 
 @Component({
@@ -18,8 +18,10 @@ interface IMatch{
 export class AppComponent {
   title = 'fuzzy-search';
 
+  // a variable to keep input data
   public request : string;
 
+  // an array to keep results 
   public matches : IMatch[];
 
   constructor( private searchService : SearchService ){
@@ -28,21 +30,55 @@ export class AppComponent {
     this.matches = [];
   }
 
+  // a function to search words and calculate scores
   public search(){
+
+    // if input field is empty doen'S show anything
+
     if( !this.request ){
       this.matches = [];
       return;
     }
 
-    this.matches = articles.map( ( article ) => {
+
+    // loop through all game names and map entry of games
+    this.matches = Games.map( ( game ) => {
+        // calculating the scores
         return ( { 
-          value : article, 
-          score : this.searchService.levensteinDistance( this.request, article.title )
+          value : game, 
+          score : this.searchService.levensteinDistance( game ,  this.request)
         } );
     } )
     .sort( ( a, b ) => {
+      // a comparator to display relevant results
       return ( a.score >= b.score ? 1 : -1 );
-    } );
+    } )
+    .map( ( res )=> {
+      // to display highlights
+      return ({ 
+        score : res.score,
+        value: res.value,
+        highlights: this.searchService.findIHighlight(  res.value , this.request )
+       })
+    } )
+    .filter( ( match ) => {
+      // by calculating the scores
+      // the score value can be higher for some item without highlight matches
+      // the function removes from result items with no match
+
+      // a variable to track a match property
+      let any_match : boolean = false;
+
+      // loop through all highlights
+      match.highlights.forEach( ( highlight ) => { 
+        if( highlight.isMatch == true ){
+          any_match = true;
+        } 
+      });
+      return any_match;
+    })
+    // display only relevant data
+    .slice( 0 , 10 );
 
   }
 

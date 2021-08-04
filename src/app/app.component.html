@@ -10,8 +10,17 @@
   />
 
   <ul id="result" *ngIf = "matches.length" >
-    <li *ngFor = "let match of matches">
-      <a href="#">{{ match.value.title }} score: {{ match.score }}</a>
+    <li *ngFor = "let match of matches" class="match">
+      <!-- <a href="#">{{ match.value.title }} score: {{ match.score }}</a> -->
+      <a href="#" class="match__highlight">
+        <span 
+          *ngFor = "let highlight of match.highlights"
+          
+          [class.match__highlight--on]="highlight.isMatch"
+          >
+            {{ highlight.value }}
+        </span>
+      </a>
     </li>
     
   </ul>

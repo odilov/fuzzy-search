@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 
-export interface SearchSegment{
+export interface IHighlight{
     value   : string;
-    IsMatch : boolean;
+    isMatch : boolean;
 }
 
 @Injectable({
@@ -26,6 +26,10 @@ export class SearchService{
         // a variables to keep lengths of words
         const len1 : number = a.length;
         const len2 : number = b.length;
+
+        // match case
+        a = a.toLocaleLowerCase();
+        b = b.toLocaleLowerCase();
 
         // matrix ( dynamic programming )
         const dp = new Array < number[] >( len2 + 1 );
@@ -55,6 +59,66 @@ export class SearchService{
         }
         
         return dp[len1 - 1][len2 - 1];
+
+    }
+
+
+    /**
+        * @param  { string } a Request
+        * @param  { string } b Compared string
+        * @return { array  } of IHighlight
+    **/
+
+     public findIHighlight( a : string, b : string ) : IHighlight[] {
+        // a variables to keep lengths of words
+        const len1 : number = a.length;
+        const len2 : number = b.length;
+
+        let i : number = 0;
+        let j : number = 0;
+
+        // match case
+        a = a.toLocaleLowerCase();
+        b = b.toLocaleLowerCase();
+
+        let highlights : IHighlight[] = [];
+        let highlight : IHighlight | undefined;
+        
+        
+
+        while( i < len1 ){
+            if( a[i] === b[j] ){
+                j++;
+                if( highlight && highlight.isMatch ){
+                    highlight.value += a[i];
+                } else {
+                    highlights.push( {
+                        value: a[i],
+                        isMatch: true 
+                    });
+                }
+                if( j == len2 && i < len1 ){
+                    highlights.push({
+                        value: a.slice( j ),
+                        isMatch: false
+                    });
+                    break;
+                }
+            } else {
+                if( highlight && !highlight.isMatch ){
+                    highlight.value += a[i];
+                } else {
+                    highlights.push( {
+                        value: a[i],
+                        isMatch: false
+                    } );
+                }
+            }
+            i++;
+
+        }
+        
+        return highlights;
 
     }
 
