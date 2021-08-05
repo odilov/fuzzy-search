@@ -12,6 +12,12 @@ Search in list of steam games ( 5000 words )
 
 ![preview.gif](https://odilov.de/github/fuzzy-search/preview.gif)
 
+## Features
+* User Interface
+* Calculate score ( Levenstein Distance )
+* Sort Search Results
+* Display Highlights
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
