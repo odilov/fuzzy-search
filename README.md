@@ -1,5 +1,7 @@
 # FuzzySearch    ![visitors](https://visitor-badge.glitch.me/badge?page_id=odilov.fuzzy-search)
 
+This project is meant to be used for learning and researching purposes only, and it is not meant to be used for production.
+
 ## Description
 
 An implementation of Fuzzy Search in Angular using Levenstein Distance
